@@ -3,7 +3,7 @@ var Staff = require("../models/StaffModel");
 var History = require("../models/HistoryModels");
 var Menu = require("../models/MenuModel");
 
-var { handleReponseField } = require("../util/ResponseField");
+var { handleResponseField } = require("../util/ResponseField");
 var { handleGetAll } = require("../util/GetAllData");
 
 const mongoose = require("mongoose");
@@ -191,7 +191,7 @@ const controllerStaff = (socket, io) => {
         };
         const history = new History(initHistory);
         await history.save();
-        handleGetAll(io, History, "data-management", handleReponseField);
+        handleGetAll(io, History, "data-management", handleResponseField);
       });
 
     Table.findOneAndDelete(query)

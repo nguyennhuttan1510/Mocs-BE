@@ -4,8 +4,8 @@ var History = require("../models/HistoryModels");
 var Menu = require("../models/MenuModel");
 var DefaultTable = require("../models/DefaultTableModel");
 
-var { handleResponseMenu } = require("../util/responseField");
-var { handleGetAll } = require("../util/getAllData");
+var { handleResponseMenu } = require("../util/ResponseField");
+var { handleGetAll } = require("../util/GetAllData");
 
 const mongoose = require("mongoose");
 
