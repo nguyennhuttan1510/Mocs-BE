@@ -5,7 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+require("dotenv").config();
 var indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/signin");
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/public", express.static("public"));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: process.env.HOST_CLIENT, credentials: true }));
 
 app.use("/", indexRouter);
 app.use("/staff", usersRouter);

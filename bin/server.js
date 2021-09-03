@@ -1,21 +1,17 @@
 var server = require("./www");
-// var Table = require("../models/TableModels");
-// var Staff = require("../models/Staff");
-// var History = require("../models/HistoryModels");
+require("dotenv").config();
 var controllerStaff = require("../controller/SocketStaff");
 var controllerChef = require("../controller/SocketChef");
 var controllerAdmin = require("../controller/SocketAdmin");
 var controllerTableAndMenu = require("../controller/SocketTableAndMenu");
 
-//CONNECT MONGODB
+//CONNECT SOCKET IO
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://localhost:3000",
+    origin: process.env.HOST_CLIENT,
     methods: ["GET", "POST", "PUT", "PATCH"],
   },
 });
-
-//CONNECT SOCKET IO
 
 io.on("connection", (socket) => {
   console.log(`${socket.id} is connected`);
