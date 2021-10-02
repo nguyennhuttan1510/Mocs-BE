@@ -72,21 +72,32 @@ exports.getStaff = function (req, res, next) {
 //   }
 // };
 
-exports.patchStaff = function (req, res, next) {
-  const idStaff = req.params.idStaff;
-  Staff.findOneAndUpdate({ id: idStaff }, req.body, { new: true })
-    .exec()
-    .then((Staff) => {
-      res.send({
-        status: true,
-        message: `Update Staff ${Staff.name} successfully`,
-        data: Staff,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({ error: err });
-    });
-};
+// exports.patchStaff = function (req, res, next) {
+//   const idStaff = req.params.idStaff;
+//   console.log("🚀 ~ file: Staff.js ~ line 77 ~ idStaff", idStaff);
+//   console.log("🚀 ~ file: Staff.js ~ line 80 ~ req.body", req.body);
+//   const objStaffUpdate = {
+//     phone: req.body.phone,
+//     salary: !!req.body.salary || 0,
+//     position: req.body.position,
+//     bonus: !!req.body.bonus || 0,
+//     name: req.body.name,
+//     avatar: req?.file?.path,
+//   };
+//   Staff.findOneAndUpdate({ id: idStaff }, objStaffUpdate, { new: true })
+//     .exec()
+//     .then((Staff) => {
+//       console.log("🚀 ~ file: Staff.js ~ line 81 ~ .then ~ Staff", Staff);
+//       res.send({
+//         status: true,
+//         message: `Update Staff ${Staff.name} successfully`,
+//         data: Staff,
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(500).send({ error: err });
+//     });
+// };
 
 exports.deleteStaff = function (req, res, next) {
   const idStaff = req.params.idStaff;

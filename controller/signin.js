@@ -26,6 +26,8 @@ exports.giveStaff = function (req, res, next) {
           total_cost: Staff.total_cost,
           createdAt: Staff.createdAt,
           avatar: Staff.avatar,
+          feedback: Staff.feedback,
+          point: Staff.point,
         },
       });
     });

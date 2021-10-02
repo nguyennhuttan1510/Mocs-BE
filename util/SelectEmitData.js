@@ -1,12 +1,6 @@
-exports.handleGetAll = function (
-  io,
-  model,
-  event_name,
-  fieldResponse,
-  orderBy
-) {
+exports.EmitToClient = function (method, model, fieldResponse, query) {
   model
-    .find(orderBy ? orderBy : null)
+    .find(query ? query : null)
     .exec()
     .then(async (data) => {
       let result;
@@ -15,10 +9,14 @@ exports.handleGetAll = function (
       } else {
         result = await fieldResponse(data);
       }
-      io.sockets.emit(event_name, result);
+      method(result);
     })
     .catch((err) => {
       console.log(err);
       //   res.status(400).send({ error: err });
     });
 };
+
+// exports.handleResponseErrorToClient = (hasError, method) =>{
+
+// }

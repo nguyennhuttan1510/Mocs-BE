@@ -38,6 +38,7 @@ exports.handleResponseField = async (data) => {
         name: e.name,
         salary: e.salary,
         bonus: e.bonus,
+        position: e.position,
       }));
     });
   if (arrStaff.length !== 0) {
@@ -56,6 +57,7 @@ exports.handleResponseField = async (data) => {
         name: item.name,
         salary: item.salary,
         bonus: item.bonus,
+        position: item.position,
       };
     });
     result = [...groupByStaff];

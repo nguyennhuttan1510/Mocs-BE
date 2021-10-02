@@ -11,6 +11,7 @@ const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/signin");
 const MenuRouter = require("./routes/menu");
 const defaultTable = require("./routes/default-table");
+const event = require("./routes/clients/events");
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use("/staff", usersRouter);
 app.use("/login", loginRouter);
 app.use("/menu", MenuRouter);
 app.use("/table", defaultTable);
+app.use("/event", event);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

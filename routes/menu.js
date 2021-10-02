@@ -2,12 +2,15 @@ var express = require("express");
 var router = express.Router();
 var Menu = require("../models/MenuModel");
 var { handleResponseMenu } = require("../util/ResponseField");
+const upload = require("../middleware/UploadImage");
 
 const mongoose = require("mongoose");
 
 /* GET users listing. */
 
-router.post("/", async function (req, res, next) {
+router.post("/", upload.single("url_image"), async function (req, res, next) {
+  console.log("🚀 ~ file: menu.js ~ line 12 ~ req", req.file);
+  console.log("🚀 ~ file: menu.js ~ line 12 ~ req", req.body);
   if (!req.body) {
     res.status(202).send({
       message: "Please, fill form",
@@ -20,6 +23,8 @@ router.post("/", async function (req, res, next) {
     price: req.body.price,
     discount: req.body.discount,
     category: req.body.category,
+    url_image: req?.file?.path,
+    description_short_food: req.body.description_short_food,
   };
   const menu = new Menu(createMenu);
   try {
@@ -37,22 +42,27 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-router.put("/:id", async function (req, res) {
+router.post("/:id", upload.single("url_image"), async function (req, res) {
+  console.log("🚀 ~ file: menu.js ~ line 44 ~ req", req.body);
   const id = req.params.id;
-  if (!req.body) {
+  if (!id) return;
+  if (!req?.body) {
     res.status(202).send({
       message: "Please, fill form",
       status: false,
     });
+    return;
   }
-  const createMenu = {
+  const updateMenu = {
     name: req.body.name,
     price: req.body.price,
     discount: req.body.discount,
     category: req.body.category,
+    url_image: req?.file?.path,
+    description_short_food: req.body.description_short_food,
   };
 
-  Menu.findOneAndUpdate({ id: id }, createMenu, { new: true })
+  Menu.findOneAndUpdate({ id: id }, updateMenu, { new: true })
     .exec()
     .then((data) => {
       if (data) {

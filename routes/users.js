@@ -10,9 +10,7 @@ const {
 } = require("../controller/Staff");
 var router = express.Router();
 var Staff = require("../models/StaffModel");
-const { UserValidator } = require("../validation/Staff");
 
-const { body, validationResult } = require("express-validator");
 const upload = require("../middleware/UploadImage");
 
 /* GET users listing. */
@@ -40,7 +38,6 @@ router.get("/:idStaff", function (req, res, next) {
 
 router.post(
   "/",
-  // body('position').isLength({ min: 5 }),
   upload.single("avatar"), //"image" IS FIELD NAME NEED UPLOAD
   async function (req, res, next) {
     let maxIdStaff = 0;
@@ -52,19 +49,17 @@ router.post(
       });
     const initStaff = {
       id: req.body?.id || maxIdStaff,
-      name: req.body.name,
+      name: req.body.name == "" ? `User${maxIdStaff}` : req.body.name,
       username: req.body.username,
-      password: req.body?.password || "123456",
-      phone: req.body.phone || "",
-      position: req.body.position,
+      password:
+        req.body?.password == "undefined" ? "123456" : req.body?.password,
+      phone: req.body.phone,
+      position: req.body.position ? req.body.position : "Client",
       avatar: req?.file?.path,
-      salary: parseInt(req.body.salary),
+      salary: parseInt(req.body.salary) || 0,
+      bonus: req.body?.bonus || 0,
     };
     const staff = new Staff(initStaff);
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
 
     try {
       Staff.findOne({ username: req.body.username })
@@ -81,7 +76,10 @@ router.post(
           await staff.save();
           res.send({
             status: true,
-            message: "added Staff successfully",
+            message:
+              initStaff.position === "Client"
+                ? "Created successfully"
+                : "Added Staff successfully",
             data: staff,
           });
         });
@@ -91,7 +89,37 @@ router.post(
   }
 );
 
-router.patch("/:idStaff", patchStaff);
+router.post("/:idStaff", upload.single("avatar"), function (req, res, next) {
+  const idStaff = req.params.idStaff;
+  console.log("🚀 ~ file: Staff.js ~ line 77 ~ idStaff", idStaff);
+  console.log("🚀 ~ file: Staff.js ~ line 80 ~ req.body", req.body);
+  Staff.findOne({ id: idStaff })
+    .exec()
+    .then((data) => {
+      console.log("🚀 ~ file: users.js ~ line 98 ~ .then ~ data", data);
+      const objStaffUpdate = {
+        phone: req.body.phone || data.phone,
+        salary: req.body.salary || data.salary,
+        position: req.body.position || data.position,
+        bonus: req.body.bonus || data.bonus,
+        name: req.body.name || data.name,
+        avatar: req?.file?.path || data.avatar,
+        password: req.body.password !== "" ? req.body.password : data.password,
+      };
+      Staff.findOneAndUpdate({ id: idStaff }, objStaffUpdate, { new: true })
+        .exec()
+        .then((Staff) => {
+          console.log("🚀 ~ file: Staff.js ~ line 81 ~ .then ~ Staff", Staff);
+          res.send({
+            status: true,
+            message: `Update Staff ${Staff.name} successfully`,
+          });
+        })
+        .catch((err) => {
+          res.status(500).send({ error: err });
+        });
+    });
+});
 
 router.delete("/:idStaff", deleteStaff);
 

@@ -10,11 +10,17 @@ const StaffSchema = new Schema({
   avatar: { type: String, default: null },
   position: {
     type: String,
-    default: null,
-    enum: ["Staff", "Chef", "Manager", "Admin"],
+    default: "Staff",
+    enum: ["Staff", "Chef", "Manager", "Admin", "Client"],
   },
+  point: { type: Number, default: 0 },
   salary: { type: Number, default: 0 },
   bonus: { type: Number, default: 0 },
+  feedback: {
+    heart: { type: Array, default: [] },
+    like: { type: Array, default: [] },
+    dislike: { type: Array, default: [] },
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

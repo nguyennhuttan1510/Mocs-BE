@@ -4,6 +4,7 @@ var controllerStaff = require("../controller/SocketStaff");
 var controllerChef = require("../controller/SocketChef");
 var controllerAdmin = require("../controller/SocketAdmin");
 var controllerTableAndMenu = require("../controller/SocketTableAndMenu");
+var controllerClient = require("../controller/clients/Home");
 
 //CONNECT SOCKET IO
 const io = require("socket.io")(server, {
@@ -20,6 +21,7 @@ io.on("connection", (socket) => {
   controllerChef(socket, io);
   controllerAdmin(socket, io);
   controllerTableAndMenu(socket, io);
+  controllerClient(socket, io);
 
   socket.on("disconnect", (reason) => {
     console.log(`${socket.id} is disconnected`);
